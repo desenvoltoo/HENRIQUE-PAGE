@@ -1,140 +1,752 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>HENRIQUE O BEM QUISTO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>HENRIQUE, O BEM QUISTO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO básico / preview bonito -->
+  <meta name="description" content="Um perfil-homenagem em estilo artista: foto, bio e descrição com estética premium." />
+  <meta name="theme-color" content="#0a0f1f" />
 
   <style>
     :root{
-      --bg:#0a0f1f;
-      --bg-soft:#111735;
-      --accent:#ff4ecd;
-      --accent2:#6a5cff;
+      --bg:#070a16;
+      --bg2:#0b1030;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.14);
+
       --text:#ffffff;
       --muted:#c7d2ff;
+
+      --accent:#ff4ecd;
+      --accent2:#6a5cff;
+      --accent3:#22d3ee;
+
+      --shadow: 0 24px 80px rgba(0,0,0,.65);
+      --radius: 24px;
+      --max: 980px;
+
+      /* Filtros (ajustáveis) */
+      --sat: 1.12;
+      --con: 1.06;
+      --bri: 1.02;
+      --hue: 0deg;
+      --grain: .08;
     }
 
-    *{ box-sizing:border-box; }
-
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-      background: linear-gradient(180deg, var(--bg), #060a16);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
       color: var(--text);
+      background:
+        radial-gradient(900px 600px at 15% 8%, rgba(255,78,205,.18), transparent 60%),
+        radial-gradient(900px 600px at 85% 12%, rgba(106,92,255,.20), transparent 62%),
+        radial-gradient(900px 680px at 60% 100%, rgba(34,211,238,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
     }
 
-    /* HERO TOPO */
+    /* Topo: começa no topo, sem centralizar */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(7,10,22,.55);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .topbar-inner{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 12px 16px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 180px;
+    }
+
+    .sig{
+      width: 36px; height: 36px;
+      border-radius: 999px;
+      background: linear-gradient(45deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 30px rgba(255,78,205,.18);
+    }
+
+    .brand b{ letter-spacing: -.4px; }
+    .brand span{ color: var(--muted); font-size: .92rem; }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: .92rem;
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, background .15s ease;
+      user-select:none;
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+    }
+    .pill:hover{ transform: translateY(-1px); filter: brightness(1.06); }
+    .pill:active{ transform: translateY(0px) scale(.99); }
+    .pill small{ color: var(--muted); font-size: .85rem; }
+
+    select.pill{
+      appearance: none;
+      padding-right: 36px;
+      background-image:
+        linear-gradient(45deg, transparent 50%, rgba(255,255,255,.7) 50%),
+        linear-gradient(135deg, rgba(255,255,255,.7) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) 55%,
+        calc(100% - 12px) 55%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    main{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 26px 16px 90px;
+    }
+
+    /* Hero artista */
     .hero{
-      padding: 60px 20px 40px;
-      text-align:center;
+      display:grid;
+      gap: 18px;
+      grid-template-columns: 1fr;
+      margin-top: 10px;
+      animation: rise .7s ease both;
+    }
+
+    @media (min-width: 920px){
+      .hero{
+        grid-template-columns: 1.08fr .92fr;
+        gap: 26px;
+      }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
       background:
-        radial-gradient(circle at 30% 20%, rgba(255,78,205,.25), transparent 50%),
-        radial-gradient(circle at 80% 10%, rgba(106,92,255,.25), transparent 50%);
+        radial-gradient(520px 240px at 18% 10%, rgba(255,78,205,.18), transparent 60%),
+        radial-gradient(520px 240px at 85% 20%, rgba(106,92,255,.14), transparent 62%);
+      pointer-events:none;
+    }
+    .card > *{ position:relative; }
+
+    .bio{
+      padding: 26px 22px;
+      text-align:left;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: .92rem;
+      margin-bottom: 14px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: linear-gradient(45deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 16px rgba(255,78,205,.35);
     }
 
     h1{
-      margin:0;
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight:700;
-      letter-spacing:-1px;
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4.2vw, 3rem);
+      letter-spacing: -1px;
+      line-height: 1.05;
     }
 
-    .subtitle{
-      margin-top:12px;
-      font-size:1rem;
-      color:var(--muted);
-      letter-spacing:.3px;
+    .tagline{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 60ch;
     }
 
-    /* FOTO */
-    .photo-wrapper{
+    .badges{
       display:flex;
-      justify-content:center;
-      padding: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .badge{
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-size: .95rem;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+    .badge i{
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(45deg, var(--accent3), var(--accent2));
+      box-shadow: 0 0 18px rgba(34,211,238,.22);
+      display:inline-block;
+    }
+
+    /* Foto instagramável */
+    .photo-card{
+      padding: 14px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .frame{
+      border-radius: 22px;
+      padding: 10px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      position: relative;
+      overflow:hidden;
+    }
+
+    .frame::before{
+      content:"";
+      position:absolute;
+      inset:-5px;
+      background: linear-gradient(45deg, var(--accent), var(--accent2), var(--accent3));
+      opacity: .35;
+      filter: blur(18px);
+      z-index:0;
     }
 
     .photo{
       position:relative;
-      max-width:420px;
-      width:100%;
-      border-radius:24px;
+      z-index:1;
+      border-radius: 16px;
       overflow:hidden;
-      box-shadow: 0 25px 70px rgba(0,0,0,.6);
-      transition: transform .3s ease;
+      box-shadow: 0 18px 65px rgba(0,0,0,.55);
+      transform: translateZ(0);
     }
 
     .photo img{
-      width:100%;
       display:block;
-      border-radius:24px;
+      width:100%;
+      height:auto;
+      filter: saturate(var(--sat)) contrast(var(--con)) brightness(var(--bri)) hue-rotate(var(--hue));
+      transform: scale(1.01);
+      transition: transform .35s ease, filter .35s ease;
     }
 
-    .photo:hover{
-      transform: scale(1.02);
-    }
-
-    /* glow instagram style */
-    .photo::before{
+    /* Grain overlay */
+    .photo::after{
       content:"";
       position:absolute;
-      inset:-3px;
-      background: linear-gradient(45deg, var(--accent), var(--accent2));
-      border-radius:26px;
-      z-index:-1;
-      filter: blur(15px);
-      opacity:.6;
+      inset:0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      opacity: var(--grain);
+      mix-blend-mode: overlay;
+      pointer-events:none;
     }
 
-    /* DESCRIÇÃO */
-    .content{
-      max-width:700px;
-      margin: 30px auto 80px;
-      padding: 0 20px;
+    .frame:hover img{
+      transform: scale(1.035);
+      filter: saturate(calc(var(--sat) + .06)) contrast(calc(var(--con) + .02)) brightness(calc(var(--bri) + .01)) hue-rotate(var(--hue));
+    }
+
+    .meta{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .95rem;
+      padding: 2px 2px 6px;
+    }
+
+    .meta b{ color: var(--text); font-weight: 650; }
+    .likes{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+    }
+
+    /* Texto principal */
+    .section{
+      margin-top: 18px;
+      animation: rise2 .85s ease both;
+      animation-delay: .06s;
+    }
+
+    .section .card{
+      padding: 22px;
+    }
+
+    .desc{
+      margin:0;
+      color: var(--muted);
+      font-size: 1.07rem;
+      line-height: 1.85;
+      text-wrap: pretty;
+    }
+
+    .cta{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, background .15s ease;
+      font-size: .98rem;
+      user-select:none;
+      text-decoration:none;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.06); }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(255,78,205,.18), rgba(106,92,255,.18));
+      border-color: rgba(255,255,255,.18);
+    }
+    .btn.ghost{ background: rgba(0,0,0,.16); }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(7,10,22,.75);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 14px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.6);
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .22s ease, transform .22s ease;
+      z-index: 99;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-size: .95rem;
+      max-width: calc(100% - 24px);
       text-align:center;
     }
-
-    .content p{
-      font-size:1.1rem;
-      line-height:1.8;
-      color:var(--muted);
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-6px);
     }
 
-    /* RESPONSIVO */
-    @media(max-width:600px){
-      .hero{
-        padding-top:40px;
-      }
-      .photo{
-        border-radius:18px;
-      }
+    /* Overlay Stories */
+    .overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 100;
+    }
+    .overlay.show{ display:flex; }
+
+    .story{
+      width: min(420px, 92vw);
+      aspect-ratio: 9 / 16;
+      border-radius: 28px;
+      overflow:hidden;
+      position: relative;
+      background:
+        radial-gradient(520px 360px at 25% 20%, rgba(255,78,205,.25), transparent 60%),
+        radial-gradient(520px 360px at 78% 10%, rgba(106,92,255,.25), transparent 60%),
+        linear-gradient(180deg, #070a16, #0b1030);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 30px 120px rgba(0,0,0,.7);
     }
 
+    .story .top{
+      position:absolute; left: 16px; right: 16px; top: 16px;
+      display:flex; align-items:center; justify-content: space-between;
+      color: rgba(255,255,255,.92);
+      font-size: .95rem;
+    }
+    .story .top .mini{
+      display:flex; gap:10px; align-items:center;
+    }
+    .story .top .mini .sig{ width: 28px; height: 28px; }
+
+    .story .img{
+      position:absolute; left: 16px; right: 16px; top: 62px;
+      height: 58%;
+      border-radius: 20px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+    }
+    .story .img img{
+      width:100%; height:100%; object-fit: cover;
+      filter: saturate(var(--sat)) contrast(var(--con)) brightness(var(--bri)) hue-rotate(var(--hue));
+      transform: scale(1.03);
+    }
+
+    .story .text{
+      position:absolute; left: 18px; right: 18px; bottom: 18px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .story .text b{ display:block; font-size: 1.15rem; margin-bottom: 6px; letter-spacing:-.4px; }
+    .story .text p{ margin:0; color: var(--muted); line-height: 1.55; font-size: .98rem; }
+
+    .overlay .close{
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      border-radius: 999px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.28);
+      color: var(--text);
+      cursor:pointer;
+    }
+
+    /* Animações */
+    @keyframes rise{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+    @keyframes rise2{
+      from{ opacity:0; transform: translateY(12px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .hero, .section{ animation: none; }
+      .pill, .btn, .frame:hover img{ transition: none; }
+    }
   </style>
 </head>
 
 <body>
 
-  <section class="hero">
-    <h1>HENRIQUE, O BEM QUISTO</h1>
-    <div class="subtitle">Uma amizade que faz diferença</div>
-  </section>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="sig" aria-hidden="true"></div>
+        <div>
+          <b>Perfil • Artista</b><br>
+          <span id="sinceText">amizade em construção</span>
+        </div>
+      </div>
 
-  <div class="photo-wrapper">
-    <div class="photo">
-      <img src="foto.jpg" alt="Henrique">
+      <div class="controls">
+        <select id="styleSelect" class="pill" title="Escolher estilo">
+          <option value="cinematic">Cinematic</option>
+          <option value="vintage">Vintage</option>
+          <option value="clean">Clean</option>
+        </select>
+
+        <button class="pill" id="storiesBtn" title="Abrir modo Stories (9:16)">
+          📸 <small>Stories</small>
+        </button>
+
+        <button class="pill" id="shareBtn" title="Compartilhar">
+          🔗 <small>Compartilhar</small>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="card">
+        <div class="bio">
+          <div class="kicker"><span class="dot"></span> Homenagem • vibe de artista</div>
+
+          <h1>HENRIQUE, O BEM QUISTO</h1>
+          <p class="tagline">
+            Um perfil que não grita — <b>marca</b>. Uma presença que não precisa provar nada:
+            ela simplesmente <b>eleva</b> tudo ao redor.
+          </p>
+
+          <div class="badges" aria-label="Destaques">
+            <div class="badge"><i></i> Lealdade constante</div>
+            <div class="badge"><i></i> Energia que soma</div>
+            <div class="badge"><i></i> Respeito por atitude</div>
+            <div class="badge"><i></i> Presença que inspira</div>
+          </div>
+
+          <div class="cta">
+            <a class="btn primary" href="foto.jpg" target="_blank" rel="noopener">🖼️ Ver foto em alta</a>
+            <button class="btn ghost" id="copyDescBtn">📝 Copiar descrição</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOTO -->
+      <div class="card">
+        <div class="photo-card">
+          <div class="meta">
+            <div>
+              <b>@hen_riiq</b> <span style="opacity:.85">• bem-quisto</span>
+            </div>
+            <div class="likes" title="Só um charme de feed 😄">
+              ❤️ <span id="likesCount">12.8k</span>
+            </div>
+          </div>
+
+          <div class="frame">
+            <div class="photo">
+              <img src="foto.jpg" alt="Henrique">
+            </div>
+          </div>
+
+          <div class="meta">
+            <span>📍 presença que faz bem</span>
+            <span id="yearsBadge">⏳ amizade: —</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEXTO -->
+    <section class="section">
+      <div class="card">
+        <p class="desc" id="descText">
+          Um amigo bem-quisto é aquele cuja presença acalma, fortalece e inspira.
+          Sempre disposto a ouvir, ajudar e caminhar junto, construiu respeito não por palavras, mas por atitudes constantes.
+          É alguém que soma, que agrega valor aos ambientes por onde passa e que deixa marcas positivas nas pessoas.
+          Leal, humano e verdadeiro — daqueles que fazem falta quando não estão por perto e fazem diferença quando estão.
+        </p>
+
+        <div class="cta">
+          <button class="btn primary" id="copyLinkBtn">📎 Copiar link da página</button>
+          <button class="btn" id="randomLikesBtn">✨ Atualizar “likes”</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Copiado ✅</div>
+
+  <!-- Overlay Stories -->
+  <div class="overlay" id="overlay">
+    <button class="close" id="closeOverlay">Fechar ✕</button>
+
+    <div class="story" aria-label="Modo Stories">
+      <div class="top">
+        <div class="mini">
+          <div class="sig" aria-hidden="true"></div>
+          <b>HENRIQUE</b>
+        </div>
+        <span id="storyYears">amizade: —</span>
+      </div>
+
+      <div class="img">
+        <img src="foto.jpg" alt="Henrique">
+      </div>
+
+      <div class="text">
+        <b>O bem-quisto.</b>
+        <p id="storyDesc">
+          Presença que acalma, fortalece e inspira — respeito construído por atitudes.
+        </p>
+      </div>
     </div>
   </div>
 
-  <div class="content">
-    <p>
-      Um amigo bem-quisto é aquele cuja presença acalma, fortalece e inspira.
-      Sempre disposto a ouvir, ajudar e caminhar junto, construiu respeito não por palavras,
-      mas por atitudes constantes. É alguém que soma, que agrega valor aos ambientes por onde passa
-      e que deixa marcas positivas nas pessoas. Leal, humano e verdadeiro — daqueles que fazem falta
-      quando não estão por perto e fazem diferença quando estão.
-    </p>
-  </div>
+  <script>
+    // ======== CONFIGURAÇÕES RÁPIDAS ========
+    // Coloque aqui a data aproximada que vocês viraram amigos (para contar anos).
+    // Formato: "YYYY-MM-DD"
+    const DATA_AMIZADE = "2014-02-01"; // <-- troque aqui
+
+    // ======== HELPERS ========
+    const $ = (id) => document.getElementById(id);
+
+    function toast(msg){
+      const el = $("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(window.__t);
+      window.__t = setTimeout(() => el.classList.remove("show"), 1400);
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        toast("Copiado ✅");
+      } catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        toast("Copiado ✅");
+      }
+    }
+
+    function calcYearsSince(dateStr){
+      const d0 = new Date(dateStr + "T00:00:00");
+      const now = new Date();
+      let years = now.getFullYear() - d0.getFullYear();
+      const m = now.getMonth() - d0.getMonth();
+      if (m < 0 || (m === 0 && now.getDate() < d0.getDate())) years--;
+      return Math.max(0, years);
+    }
+
+    function formatSinceText(years){
+      if (years === 0) return "amizade recente • já especial";
+      if (years === 1) return "1 ano de amizade • já é história";
+      return `${years} anos de amizade • e contando`;
+    }
+
+    function randomLikes(){
+      // só pra vibe de feed: gera número estiloso
+      const base = 8 + Math.random() * 60; // 8k..68k
+      const pretty = base < 10 ? base.toFixed(1) + "k" : Math.round(base) + "k";
+      $("likesCount").textContent = pretty;
+    }
+
+    // ======== ESTILOS (Cinematic / Vintage / Clean) ========
+    function applyStyle(mode){
+      // Ajusta filtros e grain
+      const r = document.documentElement.style;
+
+      if (mode === "cinematic"){
+        r.setProperty("--sat", "1.12");
+        r.setProperty("--con", "1.06");
+        r.setProperty("--bri", "1.02");
+        r.setProperty("--hue", "0deg");
+        r.setProperty("--grain", ".08");
+      } else if (mode === "vintage"){
+        r.setProperty("--sat", "0.98");
+        r.setProperty("--con", "1.03");
+        r.setProperty("--bri", "1.04");
+        r.setProperty("--hue", "-12deg");
+        r.setProperty("--grain", ".12");
+      } else { // clean
+        r.setProperty("--sat", "1.05");
+        r.setProperty("--con", "1.04");
+        r.setProperty("--bri", "1.03");
+        r.setProperty("--hue", "0deg");
+        r.setProperty("--grain", ".05");
+      }
+    }
+
+    // ======== SHARE ========
+    async function sharePage(){
+      const url = window.location.href;
+      const title = document.title;
+      const text = "Perfil homenagem: Henrique, o bem-quisto.";
+
+      if (navigator.share){
+        try{
+          await navigator.share({ title, text, url });
+        } catch(e){
+          // usuário cancelou, ok
+        }
+      } else {
+        await copyText(url);
+        toast("Link copiado ✅");
+      }
+    }
+
+    // ======== STORIES ========
+    function openStories(){ $("overlay").classList.add("show"); }
+    function closeStories(){ $("overlay").classList.remove("show"); }
+
+    // ======== INIT ========
+    (function init(){
+      // anos amizade
+      const years = calcYearsSince(DATA_AMIZADE);
+      $("yearsBadge").textContent = `⏳ amizade: ${years} ano${years===1?"":"s"}`;
+      $("sinceText").textContent = formatSinceText(years);
+      $("storyYears").textContent = `amizade: ${years} ano${years===1?"":"s"}`;
+
+      // estilo padrão
+      applyStyle("cinematic");
+
+      // likes iniciais
+      randomLikes();
+
+      // eventos
+      $("styleSelect").addEventListener("change", (e) => applyStyle(e.target.value));
+      $("shareBtn").addEventListener("click", sharePage);
+      $("storiesBtn").addEventListener("click", openStories);
+      $("closeOverlay").addEventListener("click", closeStories);
+      $("overlay").addEventListener("click", (e) => { if(e.target.id === "overlay") closeStories(); });
+
+      $("copyLinkBtn").addEventListener("click", () => copyText(window.location.href));
+      $("randomLikesBtn").addEventListener("click", () => { randomLikes(); toast("Atualizado ✨"); });
+
+      $("copyDescBtn").addEventListener("click", () => {
+        const text = $("descText").innerText.trim();
+        copyText(text);
+      });
+
+      // story desc curto a partir do texto principal
+      const full = $("descText").innerText.trim();
+      $("storyDesc").textContent = full.split(".").slice(0,2).join(".").trim() + ".";
+    })();
+  </script>
 
 </body>
 </html>
