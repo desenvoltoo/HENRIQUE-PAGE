@@ -6,60 +6,159 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+    :root{
+      --bg0:#060816;
+      --bg1:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.10);
+      --border: rgba(255,255,255,.14);
+      --text:#eaf0ff;
+      --muted:#cbd5f5;
+      --shadow: 0 18px 70px rgba(0,0,0,.55);
+      --radius: 22px;
+      --accent:#66b6ff;
+      --accent2:#8b5cf6;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
-      background: #0b1020;
-      color: #e5e7eb;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+
+      /* Fundo premium com glow */
+      background:
+        radial-gradient(900px 600px at 15% 10%, rgba(102,182,255,.20), transparent 60%),
+        radial-gradient(800px 500px at 85% 20%, rgba(139,92,246,.18), transparent 55%),
+        radial-gradient(900px 650px at 60% 95%, rgba(34,211,238,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 28px 16px;
     }
 
+    /* Card glass */
     .container {
       text-align: center;
-      max-width: 720px;
-      padding: 32px 20px;
+      width: min(780px, 100%);
+      padding: 34px 22px;
+
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      position: relative;
+      overflow: hidden;
+      animation: rise .7s ease both;
     }
 
+    /* brilho sutil por cima do card */
+    .container::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(520px 220px at 20% 10%, rgba(102,182,255,.20), transparent 60%),
+        radial-gradient(520px 220px at 80% 20%, rgba(139,92,246,.16), transparent 60%);
+      pointer-events:none;
+    }
+
+    /* tudo dentro acima do brilho */
+    .container > *{ position: relative; }
+
+    /* título com contraste e glow leve */
     h1 {
-      font-size: 2.4rem;
-      margin-bottom: 24px;
-      letter-spacing: -0.5px;
+      margin: 0 0 18px;
+      font-size: clamp(1.65rem, 3.2vw, 2.55rem);
+      letter-spacing: -0.6px;
+      line-height: 1.1;
+      text-shadow: 0 12px 40px rgba(0,0,0,.45);
+    }
+
+    /* pequeno detalhe abaixo do título */
+    .divider{
+      width: 120px;
+      height: 3px;
+      margin: 0 auto 22px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: .9;
+    }
+
+    /* imagem com moldura e hover suave */
+    .photo{
+      display: inline-block;
+      padding: 10px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 22px 70px rgba(0,0,0,.45);
+      margin-bottom: 22px;
+      transform: translateZ(0);
     }
 
     img {
+      display: block;
       width: 100%;
-      max-width: 480px;
-      border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
-      margin-bottom: 24px;
+      max-width: 520px;
+      height: auto;
+      border-radius: 14px;
+      transition: transform .25s ease, filter .25s ease;
+    }
+
+    .photo:hover img{
+      transform: scale(1.015);
+      filter: saturate(1.08) contrast(1.02);
     }
 
     p {
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: #cbd5f5;
+      margin: 0;
+      font-size: clamp(1rem, 1.6vw, 1.08rem);
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 64ch;
+      margin-inline: auto;
+      text-wrap: pretty;
+    }
+
+    /* animação sutil */
+    @keyframes rise{
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* acessibilidade: reduz animações se usuário preferir */
+    @media (prefers-reduced-motion: reduce){
+      .container{ animation: none; }
+      img{ transition: none; }
     }
   </style>
 </head>
 
 <body>
-
   <div class="container">
     <h1>HENRIQUE, O BEM QUISTO</h1>
+    <div class="divider"></div>
 
     <!-- Coloque sua imagem na mesma pasta e ajuste o nome abaixo -->
-    <img src="foto.jpg" alt="Descrição da imagem">
+    <a class="photo" href="foto.jpg" target="_blank" rel="noopener">
+      <img src="foto.jpg" alt="Henrique">
+    </a>
 
     <p>
       Um amigo bem-quisto é aquele cuja presença acalma, fortalece e inspira.
-Sempre disposto a ouvir, ajudar e caminhar junto, construiu respeito não por palavras, mas por atitudes constantes.
-É alguém que soma, que agrega valor aos ambientes por onde passa e que deixa marcas positivas nas pessoas.
-Leal, humano e verdadeiro — daqueles que fazem falta quando não estão por perto e fazem diferença quando estão.
+      Sempre disposto a ouvir, ajudar e caminhar junto, construiu respeito não por palavras, mas por atitudes constantes.
+      É alguém que soma, que agrega valor aos ambientes por onde passa e que deixa marcas positivas nas pessoas.
+      Leal, humano e verdadeiro — daqueles que fazem falta quando não estão por perto e fazem diferença quando estão.
     </p>
   </div>
-
 </body>
 </html>
